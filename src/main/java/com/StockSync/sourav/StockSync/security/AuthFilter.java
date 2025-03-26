@@ -19,7 +19,6 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-
 public class AuthFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
@@ -50,7 +49,7 @@ public class AuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         }catch (Exception e){
-            log.error("Error occuerd in AuthFilter: {}", e.getMessage() );
+            log.error("Error occurred in AuthFilter: {}", e.getMessage() );
         }
 
     }

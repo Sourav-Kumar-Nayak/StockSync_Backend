@@ -6,7 +6,6 @@ import com.StockSync.sourav.StockSync.dto.Response;
 import com.StockSync.sourav.StockSync.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
