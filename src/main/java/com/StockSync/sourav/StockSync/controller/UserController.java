@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
-@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
-    private final UserService userService;
+    private UserService userService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")

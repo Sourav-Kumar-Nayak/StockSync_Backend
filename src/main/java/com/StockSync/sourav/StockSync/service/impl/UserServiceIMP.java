@@ -1,4 +1,4 @@
-package com.StockSync.sourav.StockSync.service;
+package com.StockSync.sourav.StockSync.service.impl;
 
 import com.StockSync.sourav.StockSync.dto.LoginRequest;
 import com.StockSync.sourav.StockSync.dto.RegisterRequest;
@@ -10,6 +10,7 @@ import com.StockSync.sourav.StockSync.exception.InvalidCredentialsException;
 import com.StockSync.sourav.StockSync.exception.NotFoundException;
 import com.StockSync.sourav.StockSync.repository.UserRepository;
 import com.StockSync.sourav.StockSync.security.JwtUtils;
+import com.StockSync.sourav.StockSync.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,7 +26,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserServiceIMP implements UserService{
+public class UserServiceIMP implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -131,7 +132,7 @@ public class UserServiceIMP implements UserService{
         userRepository.save(existingUser);
 
         return Response.builder()
-                .status(200)
+                .status(204)
                 .message("User Successfully updated")
                 .build();
     }
