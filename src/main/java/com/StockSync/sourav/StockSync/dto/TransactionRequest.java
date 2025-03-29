@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionRequest {
 
-    @Positive(message = "Product Id is required")
+    @Positive(message = "Product id is required")
     private Long productId;
 
-    @Positive(message = "Quantity is required")
-    private Integer Quantity;
+    @Positive(message = "Quantity id is required")
+    private Integer quantity;
 
     private Long supplierId;
 
-    private String description;
+    private String  description;
 
 }

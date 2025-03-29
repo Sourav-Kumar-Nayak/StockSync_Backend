@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class CategoryServiceIIMP implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
 
     @Autowired

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class SupplierServiceIMP implements SupplierService {
+public class SupplierServiceImpl implements SupplierService {
 
 
     @Autowired

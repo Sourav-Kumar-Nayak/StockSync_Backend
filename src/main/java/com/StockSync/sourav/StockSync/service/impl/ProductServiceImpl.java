@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class ProductServiceIMP implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;

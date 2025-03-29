@@ -2,12 +2,7 @@ package com.StockSync.sourav.StockSync.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +18,9 @@ public class ProductDTO {
 
     private Long id;
 
-    private Long supplierId;
-
     private Long productId;
-
     private Long categoryId;
+    private Long supplierId;
 
     private String name;
 
@@ -43,11 +36,8 @@ public class ProductDTO {
 
     private LocalDateTime expiryDate;
 
-    private LocalDateTime updatedAt;
+    private  LocalDateTime updatedAt;
 
-    private final LocalDateTime createdAt = LocalDateTime.now();
-
-    private CategoryDTO category;
-
+    private LocalDateTime createdAt;
 
 }

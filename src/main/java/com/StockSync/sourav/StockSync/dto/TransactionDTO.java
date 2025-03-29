@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDTO {
 
-
     private Long id;
 
     private Integer totalProducts;
@@ -27,7 +26,7 @@ public class TransactionDTO {
 
     private TransactionType transactionType;
 
-    private TransactionStatus transactionStatus;
+    private TransactionStatus status;
 
     private String description;
 
@@ -37,10 +36,8 @@ public class TransactionDTO {
 
     private UserDTO user;
 
-    private SupplierDTO supplier;
-
     private ProductDTO product;
 
-
+    private SupplierDTO supplier;
 
 }
