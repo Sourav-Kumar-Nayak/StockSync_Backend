@@ -30,13 +30,14 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> deleteUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
 
     @GetMapping("/transaction/{userid}")
-    public ResponseEntity<Response> getUserAndTransaction(@PathVariable Long userid) {
+    public ResponseEntity<Response> getUserAndTransactions(@PathVariable Long userid) {
         return ResponseEntity.ok(userService.getUserTransactions(userid));
     }
 

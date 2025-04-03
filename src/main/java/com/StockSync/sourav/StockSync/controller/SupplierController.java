@@ -34,7 +34,6 @@ public class SupplierController {
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> updateSupplier(@PathVariable Long id, @RequestBody @Valid SupplierDTO supplierDTO) {
         return ResponseEntity.ok(supplierService.updateSupplier(id, supplierDTO));
     }

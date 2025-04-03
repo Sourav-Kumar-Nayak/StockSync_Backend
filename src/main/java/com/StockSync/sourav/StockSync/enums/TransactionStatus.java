@@ -4,6 +4,6 @@ public enum TransactionStatus {
     PENDING,
     COMPLETED,
     PROCESSING,
-    CLOSED
+    CANCEL
     // Add other statuses as defined in the database constraint
 }
