@@ -1,4 +1,4 @@
-FROM mavan:3.8.7-openjdk-21 AS build
+FROM mavan:latest-openjdk-21 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
