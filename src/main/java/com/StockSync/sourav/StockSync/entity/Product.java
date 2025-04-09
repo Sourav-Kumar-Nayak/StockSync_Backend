@@ -38,13 +38,20 @@ public class Product {
     @Column(columnDefinition = "text")
     private String description;
 
-    private String imageUrl;
-
     private LocalDateTime expiryDate;
 
     private LocalDateTime updatedAt;
 
     private final LocalDateTime createdAt = LocalDateTime.now();
+
+    private String imageName;
+
+    private String imageType;
+
+    @Lob
+    @Column(name = "image")
+    @Basic(fetch = FetchType.EAGER)
+    private byte[] imageData;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -59,11 +66,13 @@ public class Product {
                 ", price=" + price +
                 ", stockQuantity=" + stockQuantity +
                 ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
                 ", expiryDate=" + expiryDate +
                 ", updatedAt=" + updatedAt +
                 ", createdAt=" + createdAt +
                 ", category=" + category +
+                ", imageName='" + imageName + '\'' +
+                ", imageType='" + imageType + '\'' +
+                ", imageData=" + (imageData != null ? imageData.length : 0) + " bytes" +
                 '}';
     }
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductDTO {
+public class ProductDTOWithImage {
 
     private Long id;
 
@@ -34,10 +34,17 @@ public class ProductDTO {
 
     private String description;
 
+
     private LocalDateTime expiryDate;
 
     private  LocalDateTime updatedAt;
 
     private LocalDateTime createdAt;
+
+    private String imageName;
+
+    private String imageType;
+
+    private String imageBase64;
 
 }

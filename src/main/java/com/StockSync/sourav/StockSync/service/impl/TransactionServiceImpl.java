@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,8 +61,12 @@ public class TransactionServiceImpl implements TransactionService {
         transactionPage.forEach(transaction -> System.out.println(transaction.toString()));
 
 
-    List<TransactionDTO> transactionDTOS = modelMapper
-                .map(transactionPage.getContent(), new TypeToken<List<TransactionDTO>>() {}.getType());
+        List<Transaction> modifiableTransactionList = new ArrayList<>(transactionPage.getContent());
+
+        List<TransactionDTO> transactionDTOS = modelMapper
+                .map(modifiableTransactionList, new TypeToken<List<TransactionDTO>>() {}.getType());
+
+
 
         transactionDTOS.forEach(transactionDTOItem -> {
             transactionDTOItem.setUser(null);
@@ -207,7 +212,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         TransactionDTO transactionDTO = modelMapper.map(transaction, TransactionDTO.class);
 
-        transactionDTO.getUser().setTransactions(null); //removing the user transaction list
+        if (transactionDTO.getUser() != null) {
+            transactionDTO.getUser().setTransactions(null);
+        } //removing the user transaction list
 
         return Response.builder()
                 .status(200)

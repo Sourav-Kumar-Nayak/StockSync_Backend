@@ -1,14 +1,17 @@
 package com.StockSync.sourav.StockSync.service;
 
 import com.StockSync.sourav.StockSync.dto.ProductDTO;
+import com.StockSync.sourav.StockSync.dto.ProductDTOWithImage;
 import com.StockSync.sourav.StockSync.dto.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 public interface ProductService {
 
-    Response saveProduct(ProductDTO productDTO, MultipartFile imageFile);
+    Response saveProduct(ProductDTOWithImage productDTO, MultipartFile imageFile) throws IOException;
 
-    Response updateProduct(ProductDTO productDTO,MultipartFile imageFile);
+    Response updateProduct(ProductDTOWithImage productDTO,MultipartFile imageFile) throws IOException;
 
     Response getAllProducts();
 
@@ -16,4 +19,5 @@ public interface ProductService {
 
     Response deleteProduct(Long id);
 
+    byte[] getProductImageById(Long id);
 }

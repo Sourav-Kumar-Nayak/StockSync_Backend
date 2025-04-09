@@ -1,6 +1,7 @@
 package com.StockSync.sourav.StockSync.service.impl;
 
 import com.StockSync.sourav.StockSync.dto.ProductDTO;
+import com.StockSync.sourav.StockSync.dto.ProductDTOWithImage;
 import com.StockSync.sourav.StockSync.dto.Response;
 import com.StockSync.sourav.StockSync.entity.Category;
 import com.StockSync.sourav.StockSync.entity.Product;
@@ -16,10 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -36,9 +37,10 @@ public class ProductServiceImpl implements ProductService {
     private static final String IMAGE_DIRECTOR_FRONTEND = System.getProperty("user.dir") + "/product-image/";
 
     @Override
-    public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) {
+    public Response saveProduct(ProductDTOWithImage productDTO, MultipartFile imageFile) throws IOException {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(()-> new NotFoundException("Category Not Found"));
+
 
         //map out product dto to product entity
         Product productToSave = Product.builder()
@@ -47,12 +49,15 @@ public class ProductServiceImpl implements ProductService {
                 .price(productDTO.getPrice())
                 .stockQuantity(productDTO.getStockQuantity())
                 .description(productDTO.getDescription())
+                .imageName(imageFile.getOriginalFilename())
+                .imageType(imageFile.getContentType())
                 .category(category)
                 .build();
 
         if (imageFile != null){
-            String imagePath = saveImageToFrontendPublicFolder(imageFile);
-            productToSave.setImageUrl(imagePath);
+            productToSave.setImageData(imageFile.getBytes());
+            System.out.println("Image data: " + productToSave.getImageData());
+
         }
 
         //save the product to our database
@@ -64,16 +69,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response updateProduct(ProductDTO productDTO, MultipartFile imageFile) {
+    public Response updateProduct(ProductDTOWithImage productDTO, MultipartFile imageFile) throws IOException {
         Product existingProduct = productRepository.findById(productDTO.getProductId())
                 .orElseThrow(()-> new NotFoundException("Product Not Found"));
-
-
-        //checking if image is associated with the update request
-        if (imageFile != null && !imageFile.isEmpty()){
-            String imagePath = saveImageToFrontendPublicFolder(imageFile);
-            existingProduct.setImageUrl(imagePath);
-        }
 
         //Checking if category is to be changed for the product
         if (productDTO.getCategoryId() != null && productDTO.getCategoryId() > 0){
@@ -103,6 +101,11 @@ public class ProductServiceImpl implements ProductService {
 
         if (productDTO.getStockQuantity() !=null && productDTO.getStockQuantity() >=0){
             existingProduct.setStockQuantity(productDTO.getStockQuantity());
+        }
+        if (imageFile != null && !imageFile.isEmpty()){
+            existingProduct.setImageData(imageFile.getBytes());
+            existingProduct.setImageName(imageFile.getOriginalFilename());
+            existingProduct.setImageType(imageFile.getContentType());
         }
 
 
@@ -151,32 +154,12 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-
-    private String saveImageToFrontendPublicFolder(MultipartFile imageFile){
-        //validate image check
-        if (!imageFile.getContentType().startsWith("image/")){
-            throw new IllegalArgumentException("Only image files are allowed");
-        }
-        //create the directory to store images if it doesn't exist
-        File directory = new File(IMAGE_DIRECTOR_FRONTEND);
-
-        if (!directory.exists()){
-            directory.mkdir();
-            log.info("Directory was created");
-        }
-        //generate unique file name for the image
-        String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-        //get the absolute path of the image
-        String imagePath = IMAGE_DIRECTOR_FRONTEND + uniqueFileName;
-
-        try {
-            File desctinationFile = new File(imagePath);
-            imageFile.transferTo(desctinationFile); //we are transfering(writing to this folder)
-
-        }catch (Exception e){
-            throw new IllegalArgumentException("Error occurred while saving image" + e.getMessage());
-        }
-
-        return "products/"+uniqueFileName;
+    @Override
+    public byte[] getProductImageById(Long id) {
+        return productRepository.findById(id)
+                .map(Product::getImageData)
+                .orElse(null); // assuming imageData is a byte[] in your entity
     }
+
+
 }

@@ -1,5 +1,14 @@
 FROM openjdk:21-jdk-slim
-COPY --from=build target/StockSync-0.0.1-SNAPSHOT.jar StockSync.jar
+
+# Set working directory
+WORKDIR /app
+
+# Copy JAR into container
+COPY /target/StockSync-0.0.1-SNAPSHOT.jar .
+
+# Expose app port
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "StockSync.jar"]
+# Run the app
+ENTRYPOINT ["java", "-jar", "StockSync-0.0.1-SNAPSHOT.jar"]
+

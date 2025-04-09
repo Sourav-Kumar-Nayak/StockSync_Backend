@@ -12,6 +12,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
 
+
+
     private int status;
     private String message;
 
@@ -41,5 +43,7 @@ public class Response {
     private List<TransactionDTO> transactions;
 
     private final LocalDateTime timestamp = LocalDateTime.now();
+    private Object data;
+
 }
 
