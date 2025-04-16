@@ -48,6 +48,10 @@ public class Product {
 
     private String imageType;
 
+    private String upperLimit;
+
+    private String lowerLimit;
+
     @Lob
     @Column(name = "image")
     @Basic(fetch = FetchType.EAGER)

@@ -28,4 +28,7 @@ public class Supplier {
 
     private String address;
 
+    @Column(unique = true)
+    private String upiId;
+
 }

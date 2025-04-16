@@ -74,6 +74,7 @@ public class SupplierServiceImpl implements SupplierService {
         if (supplierDTO.getName() != null) existingSupplier.setName(supplierDTO.getName());
         if(supplierDTO.getEmail() != null) existingSupplier.setEmail(supplierDTO.getEmail());
         if(supplierDTO.getAddress() != null) existingSupplier.setAddress(supplierDTO.getAddress());
+        if(supplierDTO.getUpiId() != null) existingSupplier.setUpiId(supplierDTO.getUpiId());
         supplierRepository.save(existingSupplier);
 
 

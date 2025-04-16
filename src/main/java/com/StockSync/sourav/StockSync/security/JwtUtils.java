@@ -28,7 +28,6 @@ public class JwtUtils {
     @PostConstruct
     public void init() {
         byte[] keybyte = secretJwtString.getBytes(StandardCharsets.UTF_8);
-
         this.key = new SecretKeySpec(keybyte, "HmacSHA256");
     }
 

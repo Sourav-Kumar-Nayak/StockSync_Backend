@@ -42,10 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response registerUser(RegisterRequest registerRequest) {
 
-        UserRole role = UserRole.ROLE_MANAGER;
+        UserRole role = UserRole.ROLE_CUSTOMER;
 
         if (registerRequest.getRole()!=null){
-            role = UserRole.valueOf(registerRequest.getRole());
+            role = UserRole.valueOf("ROLE_"+registerRequest.getRole());
         }
 
         User userToSave = User.builder()

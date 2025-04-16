@@ -105,7 +105,7 @@ public class TransactionServiceImpl implements TransactionService {
         //create a transaction
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.PURCHASE)
-                .status(TransactionStatus.COMPLETED) // Ensure this value is valid
+                .status(TransactionStatus.PROCESSING) // Ensure this value is valid
                 .product(product)
                 .user(user)
                 .supplier(supplier)
@@ -143,7 +143,7 @@ public class TransactionServiceImpl implements TransactionService {
         //create a transaction
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.SALE)
-                .status(TransactionStatus.COMPLETED)
+                .status(TransactionStatus.PROCESSING)
                 .product(product)
                 .user(user)
                 .totalProducts(quantity)
