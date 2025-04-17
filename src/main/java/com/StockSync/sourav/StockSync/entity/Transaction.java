@@ -23,7 +23,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private Integer totalProducts;
 
     private BigDecimal totalPrice;
@@ -32,10 +31,11 @@ public class Transaction {
     private TransactionType transactionType;
 
     @Enumerated(EnumType.STRING)
-    private TransactionStatus transactionStatus;
+    @Column(columnDefinition = "text")
+    private TransactionStatus status;
 
+    @Column(columnDefinition = "text")
     private String description;
-
 
     private LocalDateTime updatedAt;
 
@@ -46,13 +46,12 @@ public class Transaction {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 
     @Override
     public String toString() {
@@ -61,13 +60,10 @@ public class Transaction {
                 ", totalProducts=" + totalProducts +
                 ", totalPrice=" + totalPrice +
                 ", transactionType=" + transactionType +
-                ", transactionStatus=" + transactionStatus +
+                ", status=" + status +
                 ", description='" + description + '\'' +
                 ", updatedAt=" + updatedAt +
                 ", createdAt=" + createdAt +
-                ", user=" + user +
-                ", supplier=" + supplier +
-                ", product=" + product +
                 '}';
     }
 }

@@ -1,15 +1,13 @@
-package com.StockSync.sourav.StockSync.service;
+package com.StockSync.sourav.StockSync.service.impl;
 
-import com.StockSync.sourav.StockSync.dto.LoginRequest;
-import com.StockSync.sourav.StockSync.dto.RegisterRequest;
-import com.StockSync.sourav.StockSync.dto.Response;
-import com.StockSync.sourav.StockSync.dto.UserDTO;
+import com.StockSync.sourav.StockSync.dto.*;
 import com.StockSync.sourav.StockSync.entity.User;
 import com.StockSync.sourav.StockSync.enums.UserRole;
 import com.StockSync.sourav.StockSync.exception.InvalidCredentialsException;
 import com.StockSync.sourav.StockSync.exception.NotFoundException;
 import com.StockSync.sourav.StockSync.repository.UserRepository;
 import com.StockSync.sourav.StockSync.security.JwtUtils;
+import com.StockSync.sourav.StockSync.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,7 +23,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserServiceIMP implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -41,10 +39,10 @@ public class UserServiceIMP implements UserService{
     @Override
     public Response registerUser(RegisterRequest registerRequest) {
 
-        UserRole role = UserRole.MANAGER;
+        UserRole role = UserRole.ROLE_CUSTOMER;
 
         if (registerRequest.getRole()!=null){
-            role = UserRole.valueOf(registerRequest.getRole());
+            role = UserRole.valueOf("ROLE_"+registerRequest.getRole());
         }
 
         User userToSave = User.builder()
@@ -115,13 +113,18 @@ public class UserServiceIMP implements UserService{
     @Override
     public Response updateUser(Long id, UserDTO userDTO) {
 
+
         User existingUser = userRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("User Not Found"));
 
         if (userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
         if (userDTO.getName() != null) existingUser.setName(userDTO.getName());
         if (userDTO.getPhoneNumber() != null) existingUser.setPhoneNumber(userDTO.getPhoneNumber());
-        if (userDTO.getRole() != null) existingUser.setRole(userDTO.getRole());
+        if (userDTO.getRole() != null){
+            String role = "ROLE_"+String.valueOf(userDTO.getRole());
+            existingUser.setRole(UserRole.valueOf(role));
+        }
+
 
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPhoneNumber(passwordEncoder.encode(userDTO.getPassword()));
@@ -130,10 +133,11 @@ public class UserServiceIMP implements UserService{
         userRepository.save(existingUser);
 
         return Response.builder()
-                .status(200)
+                .status(204)
                 .message("User Successfully updated")
                 .build();
     }
+
 
     @Override
     public Response deleteUser(Long id) {
@@ -147,7 +151,6 @@ public class UserServiceIMP implements UserService{
                 .message("User Successfully Deleted")
                 .build();
     }
-
 
     @Override
     public Response getUserTransactions(Long id) {
@@ -167,4 +170,48 @@ public class UserServiceIMP implements UserService{
                 .user(userDTO)
                 .build();
     }
+
+    @Override
+    public Response resetPassword(PasswordUpdateDTO passwordUpdateDTO) {
+        User existingUser = userRepository.findByEmail(passwordUpdateDTO.getEmail())
+                .orElseThrow(()-> new NotFoundException("User Not Found"));
+
+        if (!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(), existingUser.getPassword())){
+            throw new InvalidCredentialsException("Old Password is incorrect");
+        }else {
+            if (!passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getConfirmPassword())) {
+                throw new InvalidCredentialsException("New Password and Confirm Password do not match");
+            }else {
+                existingUser.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+                userRepository.save(existingUser);
+            }
+        }
+
+        return Response.builder()
+                .status(204)
+                .message("Password Successfully updated")
+                .build();
+    }
+
+    @Override
+    public Response registerUserManager(RegisterRequest registerRequest) {
+        UserRole role = UserRole.ROLE_MANAGER;
+
+        User userToSave = User.builder()
+                .name(registerRequest.getName())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .phoneNumber(registerRequest.getPhoneNumber())
+                .role(role)
+                .build();
+
+
+        userRepository.save(userToSave);
+
+        return Response.builder()
+                .status(201)
+                .message("User Created successfully")
+                .build();
+    }
+
 }

@@ -1,18 +1,15 @@
 package com.StockSync.sourav.StockSync.controller;
 
 import com.StockSync.sourav.StockSync.dto.LoginRequest;
+import com.StockSync.sourav.StockSync.dto.PasswordUpdateDTO;
 import com.StockSync.sourav.StockSync.dto.RegisterRequest;
 import com.StockSync.sourav.StockSync.dto.Response;
 import com.StockSync.sourav.StockSync.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +27,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Response> loginUser(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.loginUser(loginRequest));
+    }
+
+    @PutMapping("/update/password")
+    public ResponseEntity<Response> updatePassword(@RequestBody @Valid PasswordUpdateDTO passwordUpdateDTO) {
+        return ResponseEntity.ok(userService.resetPassword(passwordUpdateDTO));
     }
 
 

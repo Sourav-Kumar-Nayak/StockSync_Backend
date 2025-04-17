@@ -1,7 +1,5 @@
 package com.StockSync.sourav.StockSync.dto;
 
-import com.StockSync.sourav.StockSync.enums.TransactionStatus;
-import com.StockSync.sourav.StockSync.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -16,28 +14,37 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransactionDTO {
+public class ProductDTOWithImage {
 
     private Long id;
 
-    private Integer totalProducts;
+    private Long productId;
 
-    private BigDecimal totalPrice;
+    private Long categoryId;
 
-    private TransactionType transactionType;
+    private Long supplierId;
 
-    private TransactionStatus status;
+    private String name;
+
+    private String sku;
+
+    private BigDecimal price;
+
+    private Integer stockQuantity;
 
     private String description;
 
-    private LocalDateTime updatedAt;
+
+    private LocalDateTime expiryDate;
+
+    private  LocalDateTime updatedAt;
 
     private LocalDateTime createdAt;
 
-    private UserDTO user;
+    private String imageName;
 
-    private ProductDTO product;
+    private String imageType;
 
-    private SupplierDTO supplier;
+    private String imageBase64;
 
 }

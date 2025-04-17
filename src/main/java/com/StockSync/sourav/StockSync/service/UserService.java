@@ -1,10 +1,8 @@
 package com.StockSync.sourav.StockSync.service;
 
-import com.StockSync.sourav.StockSync.dto.LoginRequest;
-import com.StockSync.sourav.StockSync.dto.RegisterRequest;
-import com.StockSync.sourav.StockSync.dto.Response;
-import com.StockSync.sourav.StockSync.dto.UserDTO;
+import com.StockSync.sourav.StockSync.dto.*;
 import com.StockSync.sourav.StockSync.entity.User;
+import jakarta.validation.Valid;
 
 public interface UserService {
 
@@ -22,5 +20,8 @@ public interface UserService {
 
     Response getUserTransactions(Long id);
 
+    Response resetPassword(PasswordUpdateDTO passwordUpdateDTO);
 
+
+    Response registerUserManager(RegisterRequest registerRequest);
 }
