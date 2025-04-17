@@ -1,9 +1,6 @@
 package com.StockSync.sourav.StockSync.service.impl;
 
-import com.StockSync.sourav.StockSync.dto.LoginRequest;
-import com.StockSync.sourav.StockSync.dto.RegisterRequest;
-import com.StockSync.sourav.StockSync.dto.Response;
-import com.StockSync.sourav.StockSync.dto.UserDTO;
+import com.StockSync.sourav.StockSync.dto.*;
 import com.StockSync.sourav.StockSync.entity.User;
 import com.StockSync.sourav.StockSync.enums.UserRole;
 import com.StockSync.sourav.StockSync.exception.InvalidCredentialsException;
@@ -137,6 +134,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+
     @Override
     public Response deleteUser(Long id) {
 
@@ -149,7 +147,6 @@ public class UserServiceImpl implements UserService {
                 .message("User Successfully Deleted")
                 .build();
     }
-
 
     @Override
     public Response getUserTransactions(Long id) {
@@ -167,6 +164,28 @@ public class UserServiceImpl implements UserService {
                 .status(200)
                 .message("success")
                 .user(userDTO)
+                .build();
+    }
+
+    @Override
+    public Response resetPassword(PasswordUpdateDTO passwordUpdateDTO) {
+        User existingUser = userRepository.findByEmail(passwordUpdateDTO.getEmail())
+                .orElseThrow(()-> new NotFoundException("User Not Found"));
+
+        if (!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(), existingUser.getPassword())){
+            throw new InvalidCredentialsException("Old Password is incorrect");
+        }else {
+            if (!passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getConfirmPassword())) {
+                throw new InvalidCredentialsException("New Password and Confirm Password do not match");
+            }else {
+                existingUser.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+                userRepository.save(existingUser);
+            }
+        }
+
+        return Response.builder()
+                .status(204)
+                .message("Password Successfully updated")
                 .build();
     }
 }
