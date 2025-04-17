@@ -4,5 +4,6 @@ public enum UserRole {
     ROLE_ADMIN,
     ROLE_MANAGER,
     ROLE_CUSTOMER,
-    ROLE_SUSPENDED_USER
+    ROLE_SUSPENDED_USER;
+
 }

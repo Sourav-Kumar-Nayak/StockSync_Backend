@@ -1,5 +1,6 @@
 package com.StockSync.sourav.StockSync.controller;
 
+import com.StockSync.sourav.StockSync.dto.RegisterRequest;
 import com.StockSync.sourav.StockSync.dto.Response;
 import com.StockSync.sourav.StockSync.dto.UserDTO;
 import com.StockSync.sourav.StockSync.entity.User;
@@ -46,4 +47,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getCurrentLoggedInUser());
     }
 
+    @PostMapping("/register/manager")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Response> registerUserAsManager(@RequestBody @Valid RegisterRequest registerRequest) {
+        return ResponseEntity.ok(userService.registerUserManager(registerRequest));
+    }
 }

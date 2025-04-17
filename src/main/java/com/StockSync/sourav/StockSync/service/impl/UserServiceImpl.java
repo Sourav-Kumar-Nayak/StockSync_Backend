@@ -120,7 +120,11 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
         if (userDTO.getName() != null) existingUser.setName(userDTO.getName());
         if (userDTO.getPhoneNumber() != null) existingUser.setPhoneNumber(userDTO.getPhoneNumber());
-        if (userDTO.getRole() != null) existingUser.setRole(userDTO.getRole());
+        if (userDTO.getRole() != null){
+            String role = "ROLE_"+String.valueOf(userDTO.getRole());
+            existingUser.setRole(UserRole.valueOf(role));
+        }
+
 
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPhoneNumber(passwordEncoder.encode(userDTO.getPassword()));
@@ -188,4 +192,26 @@ public class UserServiceImpl implements UserService {
                 .message("Password Successfully updated")
                 .build();
     }
+
+    @Override
+    public Response registerUserManager(RegisterRequest registerRequest) {
+        UserRole role = UserRole.ROLE_MANAGER;
+
+        User userToSave = User.builder()
+                .name(registerRequest.getName())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .phoneNumber(registerRequest.getPhoneNumber())
+                .role(role)
+                .build();
+
+
+        userRepository.save(userToSave);
+
+        return Response.builder()
+                .status(201)
+                .message("User Created successfully")
+                .build();
+    }
+
 }
