@@ -25,22 +25,7 @@ It provides secure REST APIs for managing inventory, suppliers, warehouses, and 
 - **ORM**: Hibernate / JPA
 - **Security**: Spring Security + JWT
 - **Build Tool**: Maven 
-- **API Testing**: Postman 
+- **API Testing**: Postman
+  
 
----
 
-## 📂 Project Structure
-├── src/main/java/com/stocksync/backend/
-│ ├── config/ # Security & app configurations
-│ ├── controllers/ # REST API controllers
-│ ├── dto/ # Data Transfer Objects
-│ ├── entities/ # JPA entities
-│ ├── exceptions/ # Custom exception handling
-│ ├── repositories/ # JPA repositories
-│ ├── services/ # Business logic layer
-│ └── StockSyncApp.java # Main Spring Boot application
-├── src/main/resources/
-│ ├── application.properties (or application.yml)
-│ └── data.sql / schema.sql (optional seeds)
-├── pom.xml
-└── README.md
